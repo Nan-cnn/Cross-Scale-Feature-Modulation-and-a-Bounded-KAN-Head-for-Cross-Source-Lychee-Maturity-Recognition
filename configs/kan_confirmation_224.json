@@ -1,0 +1,68 @@
+{
+  "project_name": "MobileNetV2-KAN+ 224px KAN confirmation protocol",
+  "output_root": "outputs/kan_confirmation_224",
+  "image_size": 224,
+  "robust_augmentation": true,
+  "data": {
+    "train": "data/lychee/train",
+    "validation": "data/lychee/val",
+    "prefix_to_label": {"u": 0, "r": 1}
+  },
+  "training": {
+    "epochs": 80,
+    "patience": 12,
+    "batch_size": 4,
+    "gradient_accumulation": 8,
+    "workers": 2,
+    "optimizer": "adamw",
+    "learning_rate": 0.0003,
+    "minimum_learning_rate": 0.000001,
+    "warmup_epochs": 5,
+    "weight_decay": 0.0001,
+    "label_smoothing": 0.1,
+    "gradient_clip": 5.0,
+    "spline_regularization": 0.00001,
+    "amp": true,
+    "deterministic": true
+  },
+  "comparison": {
+    "enabled": true,
+    "ratios": [0.6],
+    "seeds": [47, 48, 49, 50, 51],
+    "models": [
+      {
+        "name": "KANBestObserved",
+        "spec": {
+          "architecture": "mobilenetv2_kan_plus",
+          "head_type": "kan",
+          "kan_layers": 3,
+          "kan_grid_size": 5,
+          "kan_spline_order": 3,
+          "hidden_dim": 256,
+          "bottleneck_dim": 512,
+          "dropout": 0.3,
+          "use_cgfm": true,
+          "use_mixstyle": true
+        }
+      },
+      {
+        "name": "KANFactorwiseCombined",
+        "spec": {
+          "architecture": "mobilenetv2_kan_plus",
+          "head_type": "kan",
+          "kan_layers": 3,
+          "kan_grid_size": 3,
+          "kan_spline_order": 2,
+          "hidden_dim": 128,
+          "bottleneck_dim": 512,
+          "dropout": 0.5,
+          "use_cgfm": true,
+          "use_mixstyle": true
+        }
+      }
+    ]
+  },
+  "ablation": {
+    "enabled": false
+  }
+}

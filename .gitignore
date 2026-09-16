@@ -1,0 +1,70 @@
+# This repository intentionally keeps only the code and configuration required
+# for training, model definitions, inference/testing, and experiment evaluation.
+# Everything else is ignored by default.
+/*
+
+# Keep this file.
+!/.gitignore
+
+# Formal experiment entry points and shared modules only.
+!/analyze_banana_results.py
+!/audit_dataset.py
+!/experiment_data.py
+!/experiment_engine.py
+!/experiment_metrics.py
+!/run_experiments.py
+!/select_kan_confirmation.py
+!/visualize_banana_results.py
+!/visualize_experiments.py
+
+# Training launcher and reproducible environment manifests.
+!/run_full_experiments.ps1
+!/run_banana_experiments.sh
+!/requirements.txt
+
+# Model implementations used by the formal experiment pipeline only.
+!/model/
+/model/*
+!/model/KANLinear.py
+!/model/MobileNetV2KANPlus.py
+!/model/factory.py
+
+# Formal experiment configurations only. Historical backups stay local.
+!/configs/
+/configs/*
+!/configs/banana_224.json
+!/configs/full_224.json
+!/configs/kan_confirmation_224.json
+!/configs/quick_smoke_224.json
+
+# Never version generated Python/test caches or local secrets if they appear
+# inside an allowed path.
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+.env
+.env.*
+
+# Defensive artifact rules for files that may be created at repository root.
+/*.pth
+/*.pt
+/*.ckpt
+/*.onnx
+/*.log
+/*.pid
+/*.csv
+/*.xlsx
+/*.xls
+/*.png
+/*.jpg
+/*.jpeg
+/*.svg
+/*.pdf
+/*.doc
+/*.docx
+/*.zip
+/*.tar
+/*.gz
+~$*.docx

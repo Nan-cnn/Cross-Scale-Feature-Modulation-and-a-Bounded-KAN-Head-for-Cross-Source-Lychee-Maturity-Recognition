@@ -1,0 +1,103 @@
+{
+  "project_name": "MobileNetV2-KAN+ banana 224px frozen-config replication",
+  "output_root": "outputs/banana_224",
+  "image_size": 224,
+  "robust_augmentation": true,
+  "data": {
+    "train": "data/banana/train",
+    "validation": "data/banana/val",
+    "test": "data/banana/test",
+    "prefix_to_label": {
+      "o": 0,
+      "r": 1
+    }
+  },
+  "training": {
+    "epochs": 80,
+    "patience": 12,
+    "batch_size": 4,
+    "gradient_accumulation": 8,
+    "workers": 2,
+    "optimizer": "adamw",
+    "learning_rate": 0.0003,
+    "minimum_learning_rate": 0.000001,
+    "warmup_epochs": 5,
+    "weight_decay": 0.0001,
+    "label_smoothing": 0.1,
+    "gradient_clip": 5.0,
+    "spline_regularization": 0.00001,
+    "amp": true,
+    "deterministic": true
+  },
+  "comparison": {
+    "enabled": true,
+    "ratios": [1.0],
+    "seeds": [42, 43, 44, 45, 46],
+    "models": [
+      {
+        "name": "MobileNetV2KANPlus",
+        "spec": {
+          "architecture": "mobilenetv2_kan_plus",
+          "head_type": "kan",
+          "kan_layers": 3,
+          "kan_grid_size": 3,
+          "kan_spline_order": 2,
+          "hidden_dim": 128,
+          "bottleneck_dim": 512,
+          "dropout": 0.5,
+          "use_cgfm": true,
+          "use_mixstyle": true
+        }
+      },
+      {
+        "name": "MobileNetV2KANHeadOnly",
+        "spec": {
+          "architecture": "mobilenetv2_kan_plus",
+          "head_type": "kan",
+          "kan_layers": 3,
+          "kan_grid_size": 3,
+          "kan_spline_order": 2,
+          "hidden_dim": 128,
+          "bottleneck_dim": 512,
+          "dropout": 0.5,
+          "use_cgfm": false,
+          "cgfm_stages": [],
+          "use_mixstyle": false
+        }
+      },
+      {
+        "name": "MobileNetV2",
+        "spec": {
+          "architecture": "mobilenet_v2"
+        }
+      },
+      {
+        "name": "ShuffleNetV2",
+        "spec": {
+          "architecture": "shufflenet_v2_x1_0"
+        }
+      },
+      {
+        "name": "ResNet50",
+        "spec": {
+          "architecture": "resnet50"
+        }
+      },
+      {
+        "name": "VGG16",
+        "spec": {
+          "architecture": "vgg16"
+        }
+      },
+      {
+        "name": "EfficientNetB3",
+        "spec": {
+          "architecture": "efficientnet_b3"
+        }
+      }
+    ]
+  },
+  "ablation": {
+    "enabled": false
+  }
+}

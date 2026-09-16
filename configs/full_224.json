@@ -1,0 +1,165 @@
+{
+  "project_name": "MobileNetV2-KAN+ 224px full protocol",
+  "output_root": "outputs/full_224",
+  "image_size": 224,
+  "robust_augmentation": true,
+  "data": {
+    "train": "data/lychee/train",
+    "validation": "data/lychee/val",
+    "test": "data/lychee/test",
+    "test1": "data/lychee/test1",
+    "prefix_to_label": {
+      "u": 0,
+      "r": 1
+    }
+  },
+  "training": {
+    "epochs": 80,
+    "patience": 12,
+    "batch_size": 4,
+    "gradient_accumulation": 8,
+    "workers": 2,
+    "optimizer": "adamw",
+    "learning_rate": 0.0003,
+    "minimum_learning_rate": 1e-06,
+    "warmup_epochs": 5,
+    "weight_decay": 0.0001,
+    "label_smoothing": 0.1,
+    "gradient_clip": 5.0,
+    "spline_regularization": 1e-05,
+    "amp": true,
+    "deterministic": true
+  },
+  "comparison": {
+    "enabled": true,
+    "ratios": [
+      0.2,
+      0.4,
+      0.6,
+      1.0
+    ],
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "models": [
+      {
+        "name": "MobileNetV2KANPlus",
+        "spec": {
+          "architecture": "mobilenetv2_kan_plus",
+          "head_type": "kan",
+          "kan_layers": 3,
+          "kan_grid_size": 3,
+          "kan_spline_order": 2,
+          "hidden_dim": 128,
+          "bottleneck_dim": 512,
+          "dropout": 0.5,
+          "use_cgfm": true,
+          "use_mixstyle": true
+        }
+      },
+      {
+        "name": "MobileNetV2KANHeadOnly",
+        "spec": {
+          "architecture": "mobilenetv2_kan_plus",
+          "head_type": "kan",
+          "kan_layers": 3,
+          "kan_grid_size": 3,
+          "kan_spline_order": 2,
+          "hidden_dim": 128,
+          "bottleneck_dim": 512,
+          "dropout": 0.5,
+          "use_cgfm": false,
+          "cgfm_stages": [],
+          "use_mixstyle": false
+        }
+      },
+      {
+        "name": "MobileNetV2",
+        "spec": {
+          "architecture": "mobilenet_v2"
+        }
+      },
+      {
+        "name": "ShuffleNetV2",
+        "spec": {
+          "architecture": "shufflenet_v2_x1_0"
+        }
+      },
+      {
+        "name": "ResNet50",
+        "spec": {
+          "architecture": "resnet50"
+        }
+      },
+      {
+        "name": "VGG16",
+        "spec": {
+          "architecture": "vgg16"
+        }
+      },
+      {
+        "name": "EfficientNetB3",
+        "spec": {
+          "architecture": "efficientnet_b3"
+        }
+      }
+    ]
+  },
+  "ablation": {
+    "enabled": true,
+    "ratio": 0.6,
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "reference": {
+      "architecture": "mobilenetv2_kan_plus",
+      "head_type": "kan",
+      "kan_layers": 2,
+      "kan_grid_size": 5,
+      "kan_spline_order": 3,
+      "hidden_dim": 256,
+      "bottleneck_dim": 512,
+      "dropout": 0.3,
+      "use_cgfm": true,
+      "use_mixstyle": true
+    },
+    "factors": {
+      "kan_layers": [
+        1,
+        2,
+        3
+      ],
+      "kan_grid_size": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "kan_spline_order": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "hidden_dim": [
+        128,
+        256,
+        512
+      ],
+      "dropout": [
+        0.0,
+        0.1,
+        0.3,
+        0.5
+      ]
+    }
+  }
+}
